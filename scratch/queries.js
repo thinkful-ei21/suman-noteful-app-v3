@@ -5,26 +5,26 @@ const { MONGODB_URI } = require('../config');
 
 const Note = require('../models/note');
 
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    const searchTerm = 'tseting';
-    let filter = {};
+// mongoose.connect(MONGODB_URI)
+//   .then(() => {
+//     //const searchTerm = 'tseting';
+//     let filter = {};
 
-    if(searchTerm){
-      filter = {$or: [ {title: {$regex: searchTerm}}, {content: {$regex: searchTerm}} ]};
-    }
+//     if(searchTerm){
+//       filter = {$or: [ {title: {$regex: searchTerm}}, {content: {$regex: searchTerm}} ]};
+//     }
 
-    return Note.find(filter).sort({updatedAt: 'desc'});
-  })
-  .then(results => {
-    console.log(results);
-  })
-  .then(() => {
-    return mongoose.disconnect();
-  })
-  .catch(err => {
-    console.error(`Error: ${err.message}`);
-  });
+//     return Note.find(filter).sort({updatedAt: 'desc'});
+//   })
+//   .then(results => {
+//     console.log(results);
+//   })
+//   .then(() => {
+//     return mongoose.disconnect();
+//   })
+//   .catch(err => {
+//     console.error(`Error: ${err.message}`);
+//   });
 
 
 

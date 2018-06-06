@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 
 const { PORT, MONGODB_URI } = require('./config');
 
+console.log('Port to be listened on :');
+console.log(PORT);
 const notesRouter = require('./routes/notes');
 
 // Create an Express application
@@ -44,13 +46,13 @@ app.use((err, req, res, next) => {
 });
 
 // Listen for incoming connections
-if (process.env.NODE_ENV !== 'test') {
+/* if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, function () {
     console.info(`Server listening on ${this.address().port}`);
   }).on('error', err => {
     console.error(err);
   });
-}
+} */
 
 // Connect to DB and Listen for incoming connections
 mongoose.connect(MONGODB_URI)
