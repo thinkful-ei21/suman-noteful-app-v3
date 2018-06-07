@@ -9,7 +9,7 @@ const { PORT, MONGODB_URI } = require('./config');
 console.log('Port to be listened on :');
 console.log(PORT);
 const notesRouter = require('./routes/notes');
-
+const folderRouter = require('./routes/folders');
 // Create an Express application
 const app = express();
 
@@ -26,6 +26,7 @@ app.use(express.json());
 
 // Mount routers
 app.use('/api/notes', notesRouter);
+app.use('/api/folders',folderRouter);
 
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {

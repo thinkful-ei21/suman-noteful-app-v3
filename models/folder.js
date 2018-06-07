@@ -3,14 +3,14 @@
 const mongoose = require('mongoose');
 
 const folderSchema = new mongoose.Schema({
-  name: {type: String,require: true, unique:true}
+  name: {type: String,required: true, unique:true}
 });
 
 //Adding `createdAt` and `updateAt` fields
-folderSchema.set('timestamp',true);
+folderSchema.set('timestamps',true);
 
 folderSchema.set('toObject',{
-  virtual: true,
+  virtuals: true,
   versionKey: false,
   transform: (doc,ret) => {
     delete ret._id;
