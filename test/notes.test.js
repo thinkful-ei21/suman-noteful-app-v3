@@ -4,7 +4,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
 const app = require('../server');
-const faker = require('faker');
+//const faker = require('faker');
 
 const { TEST_MONGODB_URI } = require('../config');
 const Note = require('../models/note');
@@ -13,13 +13,7 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 
-//Generate Note
-function generateNote(){
-  return {
-    title: faker.name.title(),
-    content: faker.lorem.sentence()
-  };
-}
+
 
 describe('Notes API resources',function(){
   before(function(){

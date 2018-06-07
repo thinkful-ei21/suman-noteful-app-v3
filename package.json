@@ -12,6 +12,7 @@
 		"test": "cross-env NODE_ENV=test mocha --file test/server.js"
 	},
 	"dependencies": {
+		"dotenv": "^6.0.0",
 		"express": "^4.16.3",
 		"faker": "^4.1.0",
 		"mongoose": "^5.1.4",

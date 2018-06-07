@@ -188,26 +188,30 @@ module.exports = router;
 //     });
 // });
 
+///ID 
+//THEN -- UPDATING -- NOTE(ID)
+//THEN -- notes.FIND (ID)
 
-// // /* ========== GET/READ A SINGLE ITEM ========== */
-// // router.get('/:id', (req, res, next) => {
-// //   const id = req.params.id;
-// //   Note
-// //     .find()
-// //     .then(() => {      
-// //       let filter = {};
-// //       if(id){
-// //         filter = {_id:id};
-// //       }
-// //       return Note.find(filter);
-// //     })
-// //     .then(([result]) => {
-// //       res.json(result[0]);    
-// //     })
-// //     .catch(err => {
-// //       console.error(`Error: ${err.message}`);
-// //     });
-// // });
+
+/* ========== GET/READ A SINGLE ITEM ========== */
+// router.get('/:id', (req, res, next) => {
+//   const id = req.params.id;
+//   Note
+//     .find()
+//     .then(() => {      
+//       let filter = {};
+//       if(id){
+//         filter = {_id:id};
+//       }
+//       return Note.find(filter);
+//     })
+//     .then(([result]) => {
+//       res.json(result[0]);    
+//     })
+//     .catch(err => {
+//       console.error(`Error: ${err.message}`);
+//     });
+// });
 
 // /* ========== POST/CREATE AN ITEM ========== */
 // router.post('/', (req, res, next) => {
