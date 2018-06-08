@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const Folder = require('../models/folder');
+const Note = require('../models/note');
 
 const router = express.Router();
 
@@ -67,6 +68,10 @@ router.post('/',(req,res,next) => {
         .json(result);
     })
     .catch(err => {
+      if(err.code === 1100){
+        err = new Error('Folder name already exists');
+        err.status = 400;        
+      }
       next(err);
     });
 });
@@ -111,11 +116,24 @@ router.delete('/:id',(req,res,next) => {
     return next(err);
   }
 
-  Folder.findByIdAndRemove(id)
+  //ON DELETE SET NULL equivalent
+  const folderRemovingPromise = Folder.findByIdAndRemove(id);
+  const noteRemoveingPromise = Note.updateMany(
+    { folderId: id },
+    {$unset: {folderId: ''}}
+  );
+
+  Promise.all([folderRemovingPromise,noteRemoveingPromise])
     .then(() => {
       res.status(204).end();
     })
     .catch(err => next(err));
+
+  // Folder.findByIdAndRemove(id)
+  //   .then(() => {
+  //     res.status(204).end();
+  //   })
+  //   .catch(err => next(err));
 });
 module.exports = router;
 

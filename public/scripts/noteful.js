@@ -27,11 +27,11 @@ const noteful = (function () {
     const notesList = generateNotesList(store.notes, store.currentNote);
     $('.js-notes-list').html(notesList);
 
-    // const folderList = generateFolderList(store.folders, store.currentQuery);
-    // $('.js-folders-list').html(folderList);
+    const folderList = generateFolderList(store.folders, store.currentQuery);
+    $('.js-folders-list').html(folderList);
 
-    // const folderSelect = generateFolderSelect(store.folders);
-    // $('.js-note-folder-entry').html(folderSelect);
+    const folderSelect = generateFolderSelect(store.folders);
+    $('.js-note-folder-entry').html(folderSelect);
 
     // const tagsList = generateTagsList(store.tags, store.currentQuery);
     // $('.js-tags-list').html(tagsList);
@@ -70,20 +70,19 @@ const noteful = (function () {
     return listItems.join('');
   }
 
-  // function generateFolderList(list, currQuery) {
-  //   const showAllItem = `
-  //     <li data-id="" class="js-folder-item ${!currQuery.folderId ? 'active' : ''}">
-  //       <a href="#" class="name js-folder-link">All</a>
-  //     </li>`;
-  //   console.log(list);
-  //   const listItems = list.map(item => `
-  //     <li data-id="${item.id}" class="js-folder-item ${currQuery.folderId === item.id ? 'active' : ''}">
-  //       <a href="#" class="name js-folder-link">${item.name}</a>
-  //       <button class="removeBtn js-folder-delete">X</button>
-  //     </li>`);
+  function generateFolderList(list, currQuery) {
+    const showAllItem = `
+      <li data-id="" class="js-folder-item ${!currQuery.folderId ? 'active' : ''}">
+        <a href="#" class="name js-folder-link">All</a>
+      </li>`;    
+    const listItems = list.map(item => `
+      <li data-id="${item.id}" class="js-folder-item ${currQuery.folderId === item.id ? 'active' : ''}">
+        <a href="#" class="name js-folder-link">${item.name}</a>
+        <button class="removeBtn js-folder-delete">X</button>
+      </li>`);
 
-  //   return [showAllItem, ...listItems].join('');
-  // }
+    return [showAllItem, ...listItems].join('');
+  }
 
   function generateFolderSelect(list) {
     const notes = list.map(item => `<option value="${item.id}">${item.name}</option>`);
@@ -143,7 +142,7 @@ const noteful = (function () {
       api.details(`/api/notes/${noteId}`)
         .then((response) => {
           store.currentNote = response;
-          console.log('This is store from handle note item click' + JSON.stringify(store.currentNote));
+          //console.log('This is store from handle note item click' + JSON.stringify(store.currentNote));
           render();
         })
         .catch(handleErrors);
@@ -241,6 +240,7 @@ const noteful = (function () {
       event.preventDefault();
 
       const folderId = getFolderIdFromElement(event.currentTarget);
+      console.log(folderId);
       store.currentQuery.folderId = folderId;
       if (folderId !== store.currentNote.folderId) {
         store.currentNote = {};
@@ -249,6 +249,7 @@ const noteful = (function () {
       api.search('/api/notes', store.currentQuery)
         .then(response => {
           store.notes = response;
+          console.log(store.notes);
           render();
         })
         .catch(handleErrors);
