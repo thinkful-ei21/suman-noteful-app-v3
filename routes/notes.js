@@ -9,7 +9,7 @@ const router = express.Router();
 
 /* ========== GET/READ ALL ITEMS ========== */
 router.get('/', (req, res, next) => {
-  const { searchTerm, folderId } = req.query;
+  const { searchTerm, folderId,tagId } = req.query;
 
   let filter = {};
 
@@ -24,7 +24,12 @@ router.get('/', (req, res, next) => {
     filter.folderId = folderId;
   }
 
+  if(tagId){
+    filter.tagId = tagId;
+  }
+
   Note.find(filter)
+    .populate('tags')
     .sort({ updatedAt: 'desc' })
     .then(results => {
       res.json(results);
@@ -45,6 +50,7 @@ router.get('/:id', (req, res, next) => {
   }
 
   Note.findById(id)
+    .populate('tags')
     .then(result => {
       if (result) {
         res.json(result);
@@ -59,7 +65,7 @@ router.get('/:id', (req, res, next) => {
 
 /* ========== POST/CREATE AN ITEM ========== */
 router.post('/', (req, res, next) => {
-  const { title, content, folderId } = req.body;
+  const { title, content, folderId, tags = [] } = req.body;
 
   /***** Never trust users - validate input *****/
   if (!title) {
@@ -74,7 +80,18 @@ router.post('/', (req, res, next) => {
     return next(err);
   }
 
-  const newNote = { title, content, folderId };
+  if(tags){
+    tags.forEach(tag => {
+      if(!mongoose.Types.ObjectId.isValid(tag)){
+        const err = new Error('Invalid tag Id in the request body');
+        err.status = 400;
+        return next(err);
+      }
+    });
+  }
+
+
+  const newNote = { title, content, folderId,tags };
 
   Note.create(newNote)
     .then(result => {
@@ -90,7 +107,7 @@ router.post('/', (req, res, next) => {
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
 router.put('/:id', (req, res, next) => {
   const { id } = req.params;
-  const { title, content, folderId} = req.body;
+  const { title, content, folderId, tags = []} = req.body;
 
   /***** Never trust users - validate input *****/
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -111,7 +128,17 @@ router.put('/:id', (req, res, next) => {
     return next(err);
   }
 
-  const updateNote = { title, content, folderId };
+  if(tags){
+    tags.forEach(tag => {
+      if(!mongoose.Types.ObjectId.isValid(tag)){
+        const err = new Error('Invalid tag Id in the request body');
+        err.status = 400;
+        return next(err);
+      }
+    });
+  }
+
+  const updateNote = { title, content, folderId, tags };
 
   Note.findByIdAndUpdate(id, updateNote, { new: true })
     .then(result => {

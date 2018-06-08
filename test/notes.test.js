@@ -63,7 +63,7 @@ describe('Notes API resources',function(){
           expect(res).to.have.status(200);
           expect(res).to.be.json;
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.keys('id', 'title', 'content', 'createdAt', 'updatedAt', 'folderId');
+          expect(res.body).to.have.keys('id', 'title', 'content', 'createdAt', 'updatedAt', 'folderId','tags');
           expect(res.body.id).to.equal(note.id);
           expect(res.body.title).to.equal(note.title);
           expect(res.body.content).to.equal(note.content);
@@ -93,7 +93,7 @@ describe('Notes API resources',function(){
           expect(res).to.have.header('location');
           expect(res).to.be.json;
           expect(res.body).to.be.a('object');
-          expect(res.body).to.have.keys('id', 'title', 'content', 'createdAt', 'updatedAt');
+          expect(res.body).to.have.keys('id', 'title', 'content', 'createdAt', 'updatedAt', 'tags');
           // 2) then call the database
           return Note.findById(res.body.id);
         })
